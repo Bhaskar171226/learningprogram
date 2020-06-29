@@ -22,7 +22,7 @@ import com.inventarymanagement.repositary.UserRepository;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -32,7 +32,7 @@ public class UserController {
 	private UserRepository userRepository;
 
 	// get all users
-	@GetMapping
+	@GetMapping("/users")
 	public List<User> getAllUsers() {
 		log.trace("getall users metod accessed");
 		log.info("getall users method");
@@ -40,32 +40,32 @@ public class UserController {
 	}
 
 	// get user by id
-	@GetMapping("/{id}")
+	@GetMapping("/users/{id}")
 	public User getUserById(@PathVariable (value = "id") Integer userId) {
 		return this.userRepository.findById(userId)
 				.orElseThrow(() -> new ResourecNotFoundException("User not found with id :" + userId));
 	}
 
 	// create user
-	@PostMapping
+	@PostMapping("/users")
 	public User createUser(@RequestBody User user) {
 		
 		return this.userRepository.save(user);
 	}
 	
 	// update user
-	@PutMapping("/{id}")
+	@PutMapping("/users/{id}")
 	public User updateUser(@RequestBody User user, @PathVariable ("id") Integer userId) {
 		 User existingUser = this.userRepository.findById(userId)
 			.orElseThrow(()-> new ResourecNotFoundException("User not found with id :" + userId));
-		  existingUser.setFirstName(user.getFirstName());
-		 existingUser.setLastName(user.getLastName());
+		  existingUser.setFirst_name(user.getFirst_name());
+		 existingUser.setLast_name(user.getLast_name());
 		 existingUser.setEmail(user.getEmail());
 		 return this.userRepository.save(existingUser);
 	}
 	
 	// delete user by id
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/users/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable ("id") Integer userId){
 		 User existingUser = this.userRepository.findById(userId)
 					.orElseThrow(()-> new ResourecNotFoundException("User not found with id :" + userId));
